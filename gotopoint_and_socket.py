@@ -61,13 +61,14 @@ try:
         data_received = ser.readline().decode('utf-8').strip()
         print(data_received + "\n")
         cmd, X, Y, Theta = decoder_frame_data(data_received)
-        
-        # Send odom data to the client
         odom_data = "!cmd:{}#x:{}#y:{}#theta:{}#\n".format(cmd,X, Y,Theta)
+        send_point(path, cmd)
+        # Send odom data to the client
+        
         client_socket.sendall(odom_data.encode())
         print("Sent to client:", odom_data)
 
-        send_point(path, cmd)
+        
 
 except KeyboardInterrupt:
     ser.close()
